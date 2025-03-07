@@ -19,8 +19,20 @@ steps:
       - --platform=managed
       - --allow-unauthenticated
 
+  # ۴. افزودن دسترسی `allUsers` به Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - services
+      - add-iam-policy-binding
+      - gcp-repo-01
+      - --member=allUsers
+      - --role=roles/run.invoker
+      - --region=us-central1
+
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01'
+
 options:
   logging: CLOUD_LOGGING_ONLY
-
