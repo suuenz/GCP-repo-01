@@ -1,0 +1,11 @@
+steps:
+  # مرحله ۱: بیلد Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcp-repo-01', '.']
+
+  # مرحله ۲: پوش کردن Docker Image به Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/gcp-repo-01']
+
+images:
+  - 'gcr.io/$PROJECT_ID/gcp-repo-01'
