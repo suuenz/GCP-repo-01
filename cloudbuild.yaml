@@ -1,14 +1,23 @@
 steps:
-  # مرحله ۱: ساخت Docker Image
+  # ۱. ساخت Docker Image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01', '.']
 
-  # مرحله ۲: Push کردن به Artifact Registry
+  # ۲. Push کردن ایمیج به Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01']
 
+  # ۳. دیپلوی روی Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - gcp-repo-01
+      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01
+      - --region=us-central1
+      - --platform=managed
+      - --allow-unauthenticated
+
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01'
-
-options:
-  logging: CLOUD_LOGGING_ONLY  # ارسال لاگ‌ها فقط به Cloud Logging
