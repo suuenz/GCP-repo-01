@@ -1,38 +1,55 @@
 steps:
-  # ۱. ساخت Docker Image
+  # ۱. کلون کردن سورس‌کد از GitHub
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/fariborzfallahzadeh/gcp-repo-01.git']
+
+  # ۲. ساخت Docker Image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01', '.']
 
-  # ۲. Push کردن ایمیج به Artifact Registry
+  # ۳. Push کردن ایمیج به Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01']
 
-  # ۳. دیپلوی روی Cloud Run
+  # ۴. تنظیم احراز هویت برای GKE
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
-      - run
-      - deploy
-      - gcp-repo-01
-      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01
-      - --region=us-central1
-      - --platform=managed
-      - --allow-unauthenticated
+      - container
+      - clusters
+      - get-credentials
+      - $_CLUSTER_NAME
+      - --zone=$_ZONE
+      - --project=$PROJECT_ID
 
-  # ۴. افزودن دسترسی `allUsers` به Cloud Run
+  # ۵. بروزرسانی Deployment در GKE
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: kubectl
     args:
-      - run
-      - services
-      - add-iam-policy-binding
-      - gcp-repo-01
-      - --member=allUsers
-      - --role=roles/run.invoker
-      - --region=us-central1
+      - apply
+      - -f
+      - k8s-deployment.yaml
+
+  # ۶. بروزرسانی Service برای LoadBalancer در GKE
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: kubectl
+    args:
+      - apply
+      - -f
+      - k8s-service.yaml
+
+  # ۷. بررسی سرویس و دریافت External IP
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: kubectl
+    args: ['get', 'svc', 'gcp-repo-01-service']
 
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/gcp-repo-01'
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _CLUSTER_NAME: "cicd-cluster"
+  _ZONE: "us-central1-a"
+  _DEPLOYMENT_NAME: "gcp-repo-01"
