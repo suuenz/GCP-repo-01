@@ -3,10 +3,10 @@ steps:
     args: ['clone', 'https://github.com/fariborzfallahzadeh/gcp-repo-01.git']
 
   - name: gcr.io/cloud-builders/docker
-    args: ['build', '-t', 'gcr.io/${PROJECT_ID}/${CINAME}:${VERSION}', '.']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}', '.']
 
   - name: gcr.io/cloud-builders/docker
-    args: ['push', 'gcr.io/${PROJECT_ID}/${CINAME}:${VERSION}']
+    args: ['push', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}']
 
 substitutions:
   PROJECT_ID: ascendant-woods-452816-t8
