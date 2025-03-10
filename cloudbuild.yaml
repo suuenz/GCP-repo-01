@@ -9,9 +9,9 @@ steps:
     args: ['push', 'gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}']
 
 substitutions:
-  PROJECT_ID: ascendant-woods-452816-t8
-  CINAME: dke-image
-  VERSION: v1.0
+  _PROJECT_ID: ascendant-woods-452816-t8
+  _CINAME: dke-image
+  _VERSION: v1.0
 
 options:
   logging: CLOUD_LOGGING_ONLY
