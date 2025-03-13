@@ -22,7 +22,7 @@ steps:
 substitutions:
   _PROJECT_ID: ascendant-woods-452816-t8
   _CINAME: myimgweb-sha256-1
-  _VERSION: v3.0
+  _VERSION: v4.0
 
 options:
   logging: CLOUD_LOGGING_ONLY
