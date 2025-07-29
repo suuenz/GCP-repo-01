@@ -20,7 +20,7 @@ steps:
       - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
 
 substitutions:
-  _PROJECT_ID: ascendant-woods-452816-t8
+  _PROJECT_ID: handy-limiter-466809-s2
   _CINAME: dke-image
   _VERSION: v1.0
 
