@@ -19,10 +19,21 @@ steps:
       - push
       - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
 
+  # 4. Update image in Kubernetes Deployment
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - set
+      - image
+      - deployment/cicd-app-1
+      - dke-image-sha256-1=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
+
 substitutions:
-  _PROJECT_ID: handy-limiter-466809-s2
-  _CINAME: dke-image
-  _VERSION: v1.0
+  _PROJECT_ID: ascendant-woods-452816-t8
+  _CINAME: myimgweb-sha256-1
+  _VERSION: v2.0
 
 options:
   logging: CLOUD_LOGGING_ONLY
