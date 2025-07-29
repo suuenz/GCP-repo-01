@@ -3,7 +3,7 @@ steps:
   - name: gcr.io/cloud-builders/git
     args:
       - clone
-      - https://github.com/fariborzfallahzadeh/gcp-repo-01.git
+      - https://github.com/suuenz/GCP-repo-01.git
 
   # 2. Build Docker image
   - name: gcr.io/cloud-builders/docker
@@ -25,14 +25,14 @@ steps:
       - set
       - image
       - deployment/cicd-app-1
-      - dke-image-sha256-1=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+      - dke-image=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
 
 substitutions:
-  _PROJECT_ID: handy-limiter-466809-s2
-  _CINAME: myimgweb-sha256-1
+  _PROJECT_ID: 982767310796-compute
+  _CINAME: dke-image
   _VERSION: v2.0
 
 options:
