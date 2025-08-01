@@ -3,21 +3,21 @@ steps:
   - name: gcr.io/cloud-builders/git
     args:
       - clone
-      - https://github.com/suuenz/GCP-repo-01.git
+      - https://github.com/suuenz/GCP-repo.git
 
   # 2. Build Docker image
   - name: gcr.io/cloud-builders/docker
     args:
       - build
       - '-t'
-      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+      - us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/${_CINAME}:${_VERSION}
       - '.'
 
-  # 3. Push Docker image
+  # 3. Push Docker image to Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+      - us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/${_CINAME}:${_VERSION}
 
   # 4. Update image in Kubernetes Deployment
   - name: gcr.io/cloud-builders/kubectl
@@ -25,7 +25,7 @@ steps:
       - set
       - image
       - deployment/cicd-app-1
-      - dke-image=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+      - dke-image=us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/${_CINAME}:${_VERSION}
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
