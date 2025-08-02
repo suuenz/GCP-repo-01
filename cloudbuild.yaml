@@ -1,9 +1,9 @@
 steps:
-  # 1. Clone repository
+  # 1. Clone public GitHub repository
   - name: gcr.io/cloud-builders/git
     args:
       - clone
-      - https://github.com/suuenz/GCP-repo.git
+      - https://github.com/suuenz/GCP-repo-01.git
 
   # 2. Build Docker image
   - name: gcr.io/cloud-builders/docker
@@ -11,7 +11,7 @@ steps:
       - build
       - '-t'
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
-      - '.'
+      - './GCP-repo-01'
 
   # 3. Push Docker image to Artifact Registry
   - name: gcr.io/cloud-builders/docker
