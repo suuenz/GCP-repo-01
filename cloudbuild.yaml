@@ -10,14 +10,14 @@ steps:
     args:
       - build
       - '-t'
-      - us-central1-docker.pkg.dev/982767310796-compute/my-repo/dke-image:v2.0
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
       - '.'
 
   # 3. Push Docker image to Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - us-central1-docker.pkg.dev/982767310796-compute/my-repo/dke-image:v2.0
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
 
   # 4. Update image in Kubernetes Deployment
   - name: gcr.io/cloud-builders/kubectl
@@ -25,7 +25,7 @@ steps:
       - set
       - image
       - deployment/cicd-app-1
-      - dke-image=us-central1-docker.pkg.dev/982767310796-compute/my-repo/dke-image:v2.0
+      - dke-image=us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
