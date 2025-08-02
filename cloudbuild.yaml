@@ -1,13 +1,16 @@
 steps:
+  # 1️⃣ کلون کردن ریپوی Public جدید
   - name: gcr.io/cloud-builders/git
     entrypoint: bash
     args:
       - -c
       - |
+        # اطمینان از حذف credential های قبلی
         git config --global --unset credential.helper || true
+        # کلون مستقیم از ریپو Public
         git clone https://github.com/suuenz/GCP-repo-01.git
 
-  # 2. Build Docker image from cloned repo
+  # 2️⃣ بیلد ایمیج داکر از سورس کلون‌شده
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -15,13 +18,13 @@ steps:
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
       - './GCP-repo-01'
 
-  # 3. Push Docker image to Artifact Registry
+  # 3️⃣ پوش کردن ایمیج به Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
 
-  # 4. Update Kubernetes Deployment
+  # 4️⃣ آپدیت Deployment در Kubernetes
   - name: gcr.io/cloud-builders/kubectl
     args:
       - set
@@ -32,5 +35,6 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
       - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
 
+# تنظیمات لاگ
 options:
   logging: CLOUD_LOGGING_ONLY
