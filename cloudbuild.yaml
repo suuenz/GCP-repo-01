@@ -1,9 +1,11 @@
 steps:
-  # 1. Clone public repository (no token)
   - name: gcr.io/cloud-builders/git
+    entrypoint: bash
     args:
-      - clone
-      - https://github.com/suuenz/GCP-repo-01.git
+      - -c
+      - |
+        git config --global --unset credential.helper || true
+        git clone https://github.com/suuenz/GCP-repo-01.git
 
   # 2. Build Docker image from cloned repo
   - name: gcr.io/cloud-builders/docker
