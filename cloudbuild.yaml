@@ -24,17 +24,6 @@ steps:
       - push
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
 
-  # 4️⃣ آپدیت Deployment در Kubernetes
-  - name: gcr.io/cloud-builders/kubectl
-    args:
-      - set
-      - image
-      - deployment/cicd-app-1
-      - dke-image=us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
-
 # تنظیمات لاگ
 options:
   logging: CLOUD_LOGGING_ONLY
