@@ -1,11 +1,11 @@
 steps:
-  # 1. Clone public GitHub repository
+  # 1. Clone public repository (no token)
   - name: gcr.io/cloud-builders/git
     args:
       - clone
       - https://github.com/suuenz/GCP-repo-01.git
 
-  # 2. Build Docker image
+  # 2. Build Docker image from cloned repo
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -19,7 +19,7 @@ steps:
       - push
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
 
-  # 4. Update image in Kubernetes Deployment
+  # 4. Update Kubernetes Deployment
   - name: gcr.io/cloud-builders/kubectl
     args:
       - set
