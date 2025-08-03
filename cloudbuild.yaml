@@ -1,39 +1,25 @@
 steps:
-  # 1. Clone repository
+  # 1️⃣ کلون کردن ریپوی Public جدید
   - name: gcr.io/cloud-builders/git
+    entrypoint: bash
     args:
-      - clone
-      - https://github.com/suuenz/gcp-repo-01.git
+      - -c
+      - |
+        # اطمینان از حذف credential های قبلی
+        git config --global --unset credential.helper || true
+        # کلون مستقیم از ریپو Public
+        git clone https://github.com/suuenz/GCP-repo-01.git
 
-  # 2. Build Docker image
+  # 2️⃣ بیلد ایمیج داکر از سورس کلون‌شده
   - name: gcr.io/cloud-builders/docker
     args:
       - build
       - '-t'
-      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
-      - '.'
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
+      - './GCP-repo-01'
 
-  # 3. Push Docker image
+  # 3️⃣ پوش کردن ایمیج به Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
-
-  # 4. Update image in Kubernetes Deployment
-  - name: gcr.io/cloud-builders/kubectl
-    args:
-      - set
-      - image
-      - deployment/cicd-app-1
-      - dke-image-sha256-1=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=cicd-cluster'
-
-substitutions:
-  _PROJECT_ID: eighth-vehicle-466618-g2
-  _CINAME: myimgweb-sha256-1
-  _VERSION: v2.0
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
