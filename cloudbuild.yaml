@@ -1,31 +1,28 @@
 steps:
-  # 1️⃣ کلون کردن ریپوی Public جدید
+  # 1. Clone repository
   - name: gcr.io/cloud-builders/git
-    entrypoint: bash
     args:
-      - -c
-      - |
-        # اطمینان از حذف credential های قبلی
-        git config --global --unset credential.helper || true
-        # کلون مستقیم از ریپو Public
-        git clone https://github.com/suuenz/GCP-repo-01.git
+      - clone
+      - https://github.com/suuenz/gcp-repo-01.git
 
-  # 2️⃣ بیلد ایمیج داکر از سورس کلون‌شده
+  # 2. Build Docker image
   - name: gcr.io/cloud-builders/docker
     args:
       - build
       - '-t'
-      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/dke-image:v2.0
-      - './GCP-repo-01'
+      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
+      - '.'
 
-  # 3️⃣ پوش کردن ایمیج به Artifact Registry
+  # 3. Push Docker image
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/dke-image:v2.0
+      - gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
 
+substitutions:
+  _PROJECT_ID: eighth-vehicle-466618-g2
+  _CINAME: dke-image
+  _VERSION: v2.0
 
-
-# تنظیمات لاگ
 options:
   logging: CLOUD_LOGGING_ONLY
