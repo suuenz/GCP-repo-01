@@ -15,14 +15,14 @@ steps:
     args:
       - build
       - '-t'
-      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/dke-image:v2.0
       - './GCP-repo-01'
 
   # 3️⃣ پوش کردن ایمیج به Artifact Registry
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
+      - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/dke-image:v2.0
 
 
 
