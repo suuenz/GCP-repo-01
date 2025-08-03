@@ -24,7 +24,7 @@ steps:
     args:
       - set
       - image
-      - deployment/ cicd-app-01
+      - deployment/cicd-app-01
       - dke-image-sha256-1=gcr.io/${_PROJECT_ID}/${_CINAME}:${_VERSION}
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
