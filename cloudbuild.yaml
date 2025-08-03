@@ -23,3 +23,9 @@ steps:
     args:
       - push
       - us-central1-docker.pkg.dev/eighth-vehicle-466618-g2/my-repo/dke-image:v2.0
+
+
+
+# تنظیمات لاگ
+options:
+  logging: CLOUD_LOGGING_ONLY
